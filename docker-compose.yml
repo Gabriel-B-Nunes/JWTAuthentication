@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:13.22-alpine3.22
+    restart: always
+    environment:
+      POSTGRES_DB: jwtauthentication
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./back-end/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - appnet
+  
+  app:
+    build: ./back-end
+    depends_on:
+      db:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jwtauthentication
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./back-end/logs:/app/logs
+    networks:
+      - appnet
+
+networks:
+  appnet:

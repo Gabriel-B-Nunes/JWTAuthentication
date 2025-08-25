@@ -1,0 +1,13 @@
+# syntax=docker/dockerfile:1
+FROM maven:3.9.11-amazoncorretto-17-alpine AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN ["mvn", "clean", "package", "-DskipTests"]
+
+FROM alpine:3.22.1
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+RUN apk update && \
+apk add openjdk17-jre
+ENTRYPOINT ["java", "-jar", "app.jar"]

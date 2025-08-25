@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: JWTAuthentication
+  
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    name: ${SPRING_DATASOURCE_NAME}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
